@@ -1,0 +1,27 @@
+name: Closure Compiler for Movable Type
+id: ClosureCompilerMT
+key: ClosureCompilerMT
+description: Adds integration between Movable Type and Google's Closure Compiler REST service
+author_name: Mike Thomsen
+author_link: http://www.codemonkeyramblings.com/plugins
+blog_config_template: blog_config.tmpl
+version: 1.0
+
+settings:
+    closure_compiler_compliation_level:
+        scope: blog
+        default: SIMPLE_OPTIMIZATIONS
+
+object_types:
+    template:
+        process_with_closure_compiler: boolean meta
+
+tags:
+    function:
+        ClosureCompilerTemplateEditorAddition: $ClosureCompilerMT::MT::ClosureCompiler::Callbacks::edit_template_cc_hdlr
+
+callbacks:
+    build_page: $ClosureCompilerMT::MT::ClosureCompiler::Callbacks::build_file
+    cms_pre_save.template: $ClosureCompilerMT::MT::ClosureCompiler::Callbacks::cms_pre_save_template
+    MT::App::CMS::template_param.edit_template: $ClosureCompilerMT::MT::ClosureCompiler::Callbacks::edit_template_param
+

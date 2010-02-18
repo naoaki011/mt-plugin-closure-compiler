@@ -1,0 +1,11 @@
+<mtapp:Setting
+	id="closure_compiler_compliation_level"
+	required="1"
+	label="Closure compiler optimization level"
+	hint="Choose how aggressively Google's Closure compiler should optimize JavaScript for you.">
+	<input type="radio" <mt:if name="closure_compiler_compliation_level" eq="WHITESPACE_ONLY">checked="checked"</mt:if> name="closure_compiler_compliation_level" id="closure_compiler_compliation_level_ws" value="WHITESPACE_ONLY"/> <label for="closure_compiler_compliation_level_ws">White space only</label><br/>
+	<input type="radio" <mt:if name="closure_compiler_compliation_level" eq="SIMPLE_OPTIMIZATIONS">checked="checked"</mt:if> name="closure_compiler_compliation_level" id="closure_compiler_compliation_level_so" value="SIMPLE_OPTIMIZATIONS"/> <label for="closure_compiler_compliation_level_so">Simple optimization</label><br/>
+	<input type="radio" <mt:if name="closure_compiler_compliation_level" eq="ADVANCED_OPTIMIZATIONS">checked="checked"</mt:if> name="closure_compiler_compliation_level" id="closure_compiler_compliation_level_ao" value="ADVANCED_OPTIMIZATIONS"/> <label title="Read the warning below before using this option for the first time!" for="closure_compiler_compliation_level_ao">Advanced optimization</label>
+	<p>White space only will remove unnecessary white spaces. Simple optimization will take basic steps toward rewriting your code to make it more efficient. Advanced optimization will go much further, but runs a serious risk of changing your code in unpredictable ways if you use it on certain types of JavaScript like most jQuery plugins. Users who choose advanced optimization should thoroughly test the resulting code before using it on their production website.</p>
+</mtapp:setting>
+
