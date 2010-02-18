@@ -4,7 +4,7 @@ use strict;
 sub build_file
 {
 	my ($eh, %args) = @_;
-	unless ($args{FileInfo}->url =~ m/.js$/) { MT->log({message => 'Danger danger!' }); return; }
+	unless ($args{FileInfo}->url =~ m/.js$/) { return; }
 
 
 	my $plugin = MT->component('ClosureCompilerMT');
@@ -39,7 +39,7 @@ sub cms_pre_save_template
 sub edit_template_param
 {
 	my ($cb, $app, $param, $tmpl) = @_;
-	unless ($app->param('id')) { return; }
+	unless ($param->{id} and $param->{type} eq 'index' and $param->{outfile} =~ m/.js$/) { return; }
 	
 	use MT::Template;
 	my $template = MT::Template->load({ id => $app->param('id') });
