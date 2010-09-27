@@ -6,33 +6,35 @@ sub build_file
 	my ($eh, %args) = @_;
 	unless ($args{FileInfo}->url =~ m/.js$/) { return; }
 
+    my $tmpl = $args{template};
+	if ($tmpl->process_with_closure_compiler) {
 
-	my $plugin = MT->component('ClosureCompilerMT');
-	my $comp_level = $plugin->get_config_value('closure_compiler_compiler_level', 'blog:' . $args{Blog}->id());
-	my $browser = MT->new_ua();
-	my $response = $browser->post('http://closure-compiler.appspot.com/compile', [
-		'compilation_level' => $comp_level,
-		'output_format' => 'text',
-		'output_info' => 'compiled_code',
-		'js_code' => ${$args{Content}}
-	]);
-	MT->log({
+		my $plugin = MT->component('ClosureCompilerMT');
+		my $comp_level = $plugin->get_config_value('closure_compiler_compiler_level', 'blog:' . $args{Blog}->id());
+		my $browser = MT->new_ua();
+		my $response = $browser->post('http://closure-compiler.appspot.com/compile', [
+			'compilation_level' => $comp_level,
+			'output_format' => 'text',
+			'output_info' => 'compiled_code',
+			'js_code' => ${$args{Content}}
+		]);
+		MT->log({
 			message => sprintf('Compiled %s with Closure Compiler.<br/><br/>%s', $args{FileInfo}->url(), $args{File}),
 			blog_id => $args{Blog}->id(),
 			level => MT::Log::INFO()
 		});
-	${$args{Content}} = $response->{_content};
+		${$args{Content}} = $response->{_content};
+	}
 }
 
 sub cms_pre_save_template
 {
 	my ($cb, $app, $obj) = @_;
-	
-	if ($app->param('process_with_closure_compiler'))
-	{
+	if ($app->param('process_with_closure_compiler')) {
 		$obj->process_with_closure_compiler(1);
+	} else {
+		$obj->process_with_closure_compiler(0);
 	}
-
 	1;
 }
 
